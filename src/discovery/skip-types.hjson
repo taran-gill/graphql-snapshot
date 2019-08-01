@@ -1,0 +1,16 @@
+[
+    // List of types that the TypeManager can safely ignore
+    // - Since the TypeManager compares types as lower case, we write them as such here
+    "mutation",
+    "_modelmutationtype",
+    "query",
+    "_querymeta",
+    "__directive",
+    "__directivelocation",
+    "__enumvalue",
+    "__field",
+    "__inputvalue",
+    "__schema",
+    "__type"
+    "__typekind"
+]
