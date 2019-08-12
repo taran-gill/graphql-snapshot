@@ -6,6 +6,8 @@ module.exports = {
     target: 'node',
     entry: path.resolve(__dirname, '../../src/index.js'),
     output: {
+        library: '',
+        libraryTarget: 'commonjs',
         filename: 'audit-graph.js',
         path: path.resolve(__dirname, '../../dist/')
     },

@@ -17,17 +17,15 @@ class TypeManager {
     constructor(schema) {
         this._schema = schema;
 
+        this.queryTypes = {};
+        this._rootTypesToSkip = new Set(Hjson.parse(skippable));
+
+        this._types = {};
+        this._inputTypes = {};
+
         this._registerRootTypes();
         this._registerTypes();
     }
-
-    _queryTypes = new Set();
-    _rootTypesToSkip = new Set(Hjson.parse(skippable));
-
-    _schema = {};
-
-    _types = {};
-    _inputTypes = {};
 
     /**
      * - Register queries on the root schema
@@ -36,10 +34,17 @@ class TypeManager {
     _registerRootTypes = () => {
         const { queryType, mutationType, subscriptionType } = this._schema;
         
-        queryType.fields.forEach(({ name }) => this._queryTypes.add(name));
+        if (queryType !== null) {
+            queryType.fields.forEach(field => this.queryTypes[field.name] = field);
+        }
 
-        mutationType.fields.forEach(({ name }) => this._rootTypesToSkip.add(name.toLowerCase()));
-        subscriptionType.fields.forEach(({ name }) => this._rootTypesToSkip.add(name.toLowerCase()));
+        if (mutationType !== null) {
+            mutationType.fields.forEach(({ name }) => this._rootTypesToSkip.add(name.toLowerCase()));
+        }
+
+        if (subscriptionType !== null) {
+            subscriptionType.fields.forEach(({ name }) => this._rootTypesToSkip.add(name.toLowerCase()));
+        }
     }
 
     _registerTypes = () => {
@@ -47,17 +52,12 @@ class TypeManager {
 
         this._types = types.reduce((typeCollection, type) => {
             const name = type.name.toLowerCase();
-            if (!this._queryTypes.has(name) && !this._rootTypesToSkip.has(name)) {
+            if (!this._rootTypesToSkip.has(name)) {
                 typeCollection[name] = type;
             }
 
             return typeCollection;
         }, {});
-
-        // console.log(this._types)
-        console.log('--------')
-        console.log(this._schema.queryType.fields[0])
-        // console.log(this._queryTypes)
     }
 }
 
