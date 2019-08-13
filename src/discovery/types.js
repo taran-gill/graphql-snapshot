@@ -1,7 +1,6 @@
 /**
  * @fileoverview
  * The TypeManager constructs a list of queries for us to use.
- * - If a query fails, we can subquery its fields to know which query in particular failed.
  * 
  * @note
  * - Since __schema always converts types to lowercase (and they may not actually be lowercase),
@@ -10,14 +9,21 @@
 
 import Hjson from 'hjson';
 
-import { OBJECT, INPUT_OBJECT } from '../const.js';
 import skippable from './skip-types.hjson';
 
+import { kinds } from '../const';
+
+/**
+ * @protected {Hash<Type, MetaData>} this._queryTypes
+ * @protected {Set} this._rootTypesToSkip - Types found on the root object that we should not consider when making queries
+ * @protected {Hash<Type, MetaData>} this._types - All valid types queries may resolve to
+ * @protected {Hash<Type, MetaData>} this._inputTypes - Inputs to queries will default to appropriate values
+ */
 class TypeManager {
     constructor(schema) {
         this._schema = schema;
 
-        this.queryTypes = {};
+        this._queryTypes = {};
         this._rootTypesToSkip = new Set(Hjson.parse(skippable));
 
         this._types = {};
@@ -35,7 +41,7 @@ class TypeManager {
         const { queryType, mutationType, subscriptionType } = this._schema;
         
         if (queryType !== null) {
-            queryType.fields.forEach(field => this.queryTypes[field.name] = field);
+            queryType.fields.forEach(field => this._queryTypes[field.name] = field);
         }
 
         if (mutationType !== null) {
@@ -51,13 +57,35 @@ class TypeManager {
         const { types } = this._schema;
 
         this._types = types.reduce((typeCollection, type) => {
-            const name = type.name.toLowerCase();
-            if (!this._rootTypesToSkip.has(name)) {
-                typeCollection[name] = type;
+            const lowerCaseName = type.name.toLowerCase();
+            if (!this._rootTypesToSkip.has(lowerCaseName)) {
+                typeCollection[type.name] = type;
             }
 
             return typeCollection;
         }, {});
+    }
+
+    getRootQueries = () => {
+        return Object.entries(this._queryTypes).map(([rootQueryName, rootQueryMetadata]) => {
+            const returnType = rootQueryMetadata.type.kind === kinds.LIST ?
+                rootQueryMetadata.type.ofType.ofType.name :
+                rootQueryMetadata.type.ofType.name;
+
+            const queryObject = this._types[returnType].kind === kinds.SCALAR ?
+                returnType :
+                this._getQueryObjectFromType(returnType);
+
+            return {
+                name: rootQueryName,
+                queryObject
+            };
+        });
+    }
+
+    _getQueryObjectFromType = type => {
+        // TODO: Create object from fields
+        return this._types[type].reduce();
     }
 }
 

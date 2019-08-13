@@ -18,7 +18,7 @@ query IntrospectionQuery {
         }
     }
 }
-  
+
 fragment FullType on __Type {
     kind
     name
@@ -33,7 +33,6 @@ fragment FullType on __Type {
         ...TypeRef
         }
         isDeprecated
-        deprecationReason
     }
     inputFields {
         ...InputValue
@@ -45,7 +44,6 @@ fragment FullType on __Type {
         name
         description
         isDeprecated
-        deprecationReason
     }
     possibleTypes {
         ...TypeRef

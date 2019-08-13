@@ -1,3 +1,8 @@
+/**
+ * @fileoverview
+ * Reconcile user input with schema information
+ */
+
 import fetch from 'node-fetch';
 
 import INTROSPECTION_QUERY from './base-schema.graphql';
@@ -23,11 +28,6 @@ class SchemaRegistrar {
         }
 
         this._typeManager = new TypeManager(res.data.__schema);
-
-        console.log(this._typeManager.queryTypes)
-        Object.entries(this._typeManager.queryTypes).forEach(([query, data]) => {
-            return;
-        })
     }
 }
 
