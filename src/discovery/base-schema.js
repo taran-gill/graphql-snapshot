@@ -4,6 +4,7 @@
  */
 
 import fetch from 'node-fetch';
+import gql from 'graphql-tag';
 
 import INTROSPECTION_QUERY from './base-schema.graphql';
 
@@ -28,6 +29,8 @@ class SchemaRegistrar {
         }
 
         this._typeManager = new TypeManager(res.data.__schema);
+
+        const rootQueries = this._typeManager.getRootQueries();
     }
 }
 

@@ -8,6 +8,7 @@
  */
 
 import Hjson from 'hjson';
+import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
 import skippable from './skip-types.hjson';
 
@@ -68,24 +69,43 @@ class TypeManager {
 
     getRootQueries = () => {
         return Object.entries(this._queryTypes).map(([rootQueryName, rootQueryMetadata]) => {
-            const returnType = rootQueryMetadata.type.kind === kinds.LIST ?
-                rootQueryMetadata.type.ofType.ofType.name :
-                rootQueryMetadata.type.ofType.name;
+            let returnType
+            switch (rootQueryMetadata.type.kind) {
+                case kinds.LIST:
+                    returnType = rootQueryMetadata.type.ofType.ofType.name;
+                    break;
+                case kinds.SCALAR:
+                    returnType = rootQueryMetadata.type.name;
+                    break;
+                default:
+                    returnType = rootQueryMetadata.type.ofType.name;
+            }
 
             const queryObject = this._types[returnType].kind === kinds.SCALAR ?
-                returnType :
-                this._getQueryObjectFromType(returnType);
+                { [ rootQueryName ]: returnType } :
+                this._getQueryObjectFromType(rootQueryName, returnType);
+            
+            const query = jsonToGraphQLQuery(queryObject);
 
             return {
                 name: rootQueryName,
-                queryObject
+                query
             };
         });
     }
 
-    _getQueryObjectFromType = type => {
-        // TODO: Create object from fields
-        return this._types[type].reduce();
+    _getQueryObjectFromType = (rootQueryName, type) => {
+        const queryObject = { 
+            query: { [rootQueryName]: null }
+        };
+
+        queryObject.query[rootQueryName] = this._types[type].fields.reduce((queryObj, field) => {
+            queryObj[field.name] = true;
+
+            return queryObj;
+        }, {});
+
+        return queryObject;
     }
 }
 
