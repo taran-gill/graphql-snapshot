@@ -9,10 +9,9 @@ class GraphTester {
         await this._schemaRegistrar.initialize();
     }
 
-    async *getQueryResults() {
+    async *rootQueries() {
         const queries = this._schemaRegistrar.makeQueries();
         for await (let query of queries) {
-            console.log(query);
             yield query;
         }
     }

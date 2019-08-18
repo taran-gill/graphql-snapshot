@@ -85,7 +85,7 @@ class TypeManager {
                 { [ rootQueryName ]: returnType } :
                 this._getQueryObjectFromType(rootQueryName, returnType);
             
-            const query = jsonToGraphQLQuery(queryObject);
+            const query = jsonToGraphQLQuery({ query: queryObject });
 
             return {
                 name: rootQueryName,
@@ -95,17 +95,15 @@ class TypeManager {
     }
 
     _getQueryObjectFromType = (rootQueryName, type) => {
-        const queryObject = { 
-            query: { [rootQueryName]: null }
-        };
+        const query= { [rootQueryName]: null };
 
-        queryObject.query[rootQueryName] = this._types[type].fields.reduce((queryObj, field) => {
+        query[rootQueryName] = this._types[type].fields.reduce((queryObj, field) => {
             queryObj[field.name] = true;
 
             return queryObj;
         }, {});
 
-        return queryObject;
+        return query;
     }
 }
 
