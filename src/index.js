@@ -1,5 +1,5 @@
 import "@babel/polyfill";
 
-import { run } from './controller/audit-graph.js';
+import { GraphTester } from './controller/audit-graph.js';
 
-export { run, run as default };
+export { GraphTester, GraphTester as default };

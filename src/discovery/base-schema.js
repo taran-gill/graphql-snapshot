@@ -29,8 +29,19 @@ class SchemaRegistrar {
         }
 
         this._typeManager = new TypeManager(res.data.__schema);
+    }
 
-        const rootQueries = this._typeManager.getRootQueries();
+    async *makeQueries() {
+        const queries = this._typeManager.getRootQueries();
+        for (let queryObject of queries) {
+            const results = await this._testClient.query({ query: gql(queryObject.query) });
+
+            yield {
+                name: queryObject.name,
+                query: queryObject.query,
+                results
+            };
+        }
     }
 }
 
