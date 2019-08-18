@@ -12,7 +12,7 @@ import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
 import skippable from './skip-types.hjson';
 
-import { kinds } from '../const';
+import { kinds, MAX_NODES } from '../const';
 
 /**
  * @protected {Hash<Type, MetaData>} this._queryTypes
@@ -67,19 +67,32 @@ class TypeManager {
         }, {});
     }
 
+    /**
+     * Utility function for retrieving the type a root query falls under
+     * 
+     * @param {Number} depth - To ensure we don't cause an infinite loop and crash the process,
+     *                         early exit if we've gone too deep.
+     *                       - We multiply by 4 because each node may have up to four recursive traversals
+     *                         (case of [type!]!)
+     */
+    _getType = (type, depth = MAX_NODES * 4) => {
+        if (depth === 0) return null;
+
+        switch (type.kind) {
+            case kinds.LIST: // Fallthrough
+            case kinds.NON_NULL:
+                return this._getType(type.ofType, depth - 1);
+            case kinds.OBJECT: // Fallthrough
+            case kinds.SCALAR:
+                return type.name;
+            default:
+                return null;
+        }
+    }
+
     getRootQueries = () => {
         return Object.entries(this._queryTypes).map(([rootQueryName, rootQueryMetadata]) => {
-            let returnType
-            switch (rootQueryMetadata.type.kind) {
-                case kinds.LIST:
-                    returnType = rootQueryMetadata.type.ofType.ofType.name;
-                    break;
-                case kinds.SCALAR:
-                    returnType = rootQueryMetadata.type.name;
-                    break;
-                default:
-                    returnType = rootQueryMetadata.type.ofType.name;
-            }
+            let returnType = this._getType(rootQueryMetadata.type);
 
             const queryObject = this._types[returnType].kind === kinds.SCALAR ?
                 { [ rootQueryName ]: returnType } :
