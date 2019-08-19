@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Queries use GraphTester to test all root queries 1`] = `
+Object {
+  "name": "books",
+  "query": "query { books { name authorId isbn } }",
+  "results": Object {
+    "data": Object {
+      "books": Array [
+        Object {
+          "authorId": "1",
+          "isbn": "9780553213119",
+          "name": "Moby Dick",
+        },
+        Object {
+          "authorId": "2",
+          "isbn": "9780008329532",
+          "name": "A Tale of Two Cities",
+        },
+        Object {
+          "authorId": "2",
+          "isbn": "9780141324524",
+          "name": "A Christmas Carol",
+        },
+      ],
+    },
+    "errors": undefined,
+    "extensions": undefined,
+    "http": Object {
+      "headers": Headers {
+        Symbol(map): Object {},
+      },
+    },
+  },
+}
+`;

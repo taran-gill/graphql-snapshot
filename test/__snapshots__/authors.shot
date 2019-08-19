@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Queries use GraphTester to test all root queries 1`] = `
+Object {
+  "name": "authors",
+  "query": "query { authors { name id birthplace } }",
+  "results": Object {
+    "data": Object {
+      "authors": Array [
+        Object {
+          "birthplace": "New York City, New York, U.S.",
+          "id": "1",
+          "name": "Herman Melville",
+        },
+        Object {
+          "birthplace": "Landport, Hampshire, England",
+          "id": "2",
+          "name": "Charles Dickens",
+        },
+      ],
+    },
+    "errors": undefined,
+    "extensions": undefined,
+    "http": Object {
+      "headers": Headers {
+        Symbol(map): Object {},
+      },
+    },
+  },
+}
+`;

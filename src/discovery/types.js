@@ -1,6 +1,6 @@
 /**
  * @fileoverview
- * The TypeManager constructs a list of queries for us to use.
+ * The TypeManager constructs and resolves a list of queries for us to use.
  * 
  * @note
  * - Since __schema always converts types to lowercase (and they may not actually be lowercase),
@@ -32,6 +32,23 @@ class TypeManager {
 
         this._registerRootTypes();
         this._registerTypes();
+    }
+
+    getRootQueries = () => {
+        return Object.entries(this._queryTypes).map(([rootQueryName, rootQueryMetadata]) => {
+            let returnType = this._getType(rootQueryMetadata.type);
+
+            const queryObject = this._types[returnType].kind === kinds.SCALAR ?
+                { [ rootQueryName ]: returnType } :
+                this._getQueryObjectFromType(rootQueryName, returnType);
+            
+            const query = jsonToGraphQLQuery({ query: queryObject });
+
+            return {
+                name: rootQueryName,
+                query
+            };
+        });
     }
 
     /**
@@ -88,23 +105,6 @@ class TypeManager {
             default:
                 return null;
         }
-    }
-
-    getRootQueries = () => {
-        return Object.entries(this._queryTypes).map(([rootQueryName, rootQueryMetadata]) => {
-            let returnType = this._getType(rootQueryMetadata.type);
-
-            const queryObject = this._types[returnType].kind === kinds.SCALAR ?
-                { [ rootQueryName ]: returnType } :
-                this._getQueryObjectFromType(rootQueryName, returnType);
-            
-            const query = jsonToGraphQLQuery({ query: queryObject });
-
-            return {
-                name: rootQueryName,
-                query
-            };
-        });
     }
 
     _getQueryObjectFromType = (rootQueryName, type) => {

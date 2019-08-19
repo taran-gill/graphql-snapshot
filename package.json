@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack --config config/webpack/webpack.config.js",
-    "start": "yarn run build && node ./test/index.js"
+    "start": "yarn run build && node ./test/server/index.js",
+    "test": "yarn run build && ./node_modules/.bin/jest --config config/jest/jest.config.js",
+    "test:update": "yarn run build && ./node_modules/.bin/jest --config config/jest/jest.config.js --updateSnapshots"
   },
   "author": "Taran Gill",
   "license": "MIT",
@@ -16,6 +18,8 @@
     "apollo-server": "^2.8.1",
     "apollo-server-testing": "^2.8.1",
     "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
+    "jest-specific-snapshot": "^2.0.0",
     "raw-loader": "^3.1.0",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
