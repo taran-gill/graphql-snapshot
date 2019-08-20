@@ -6,8 +6,7 @@
   "scripts": {
     "build": "webpack --config config/webpack/webpack.config.js",
     "start": "yarn run build && node ./test/server/index.js",
-    "test": "yarn run build && ./node_modules/.bin/jest --config config/jest/jest.config.js",
-    "test:update": "yarn run build && ./node_modules/.bin/jest --config config/jest/jest.config.js --updateSnapshots"
+    "test": "yarn run build && ./node_modules/.bin/jest --config config/jest/jest.config.js"
   },
   "author": "Taran Gill",
   "license": "MIT",

@@ -12,7 +12,7 @@ import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
 import skippable from './skip-types.hjson';
 
-import { kinds, scalars, MAX_NODES } from '../const';
+import { kinds, scalars } from '../const';
 
 /**
  * @protected {Hash<Type, MetaData>} this._queryTypes
@@ -21,7 +21,7 @@ import { kinds, scalars, MAX_NODES } from '../const';
  * @protected {Hash<Type, MetaData>} this._inputTypes - Inputs to queries will default to appropriate values
  */
 class TypeManager {
-    constructor(schema) {
+    constructor(schema, options = {}) {
         this._schema = schema;
 
         this._queryTypes = {};
@@ -32,6 +32,8 @@ class TypeManager {
 
         this._registerRootTypes();
         this._registerTypes();
+
+        this._maxDepth = options.maxDepth;
     }
 
     getRootQueries = () => {
@@ -87,12 +89,10 @@ class TypeManager {
     /**
      * Utility function for retrieving the type a root query falls under
      * 
-     * @param {Number} depth - To ensure we don't cause an infinite loop and crash the process,
-     *                         early exit if we've gone too deep.
-     *                       - We multiply by 4 because each node may have up to four recursive traversals
+     * @param {Number} depth - We use a depth of 4 because each node may have up to four recursive traversals
      *                         (case of [type!]!)
      */
-    _getType = (type, depth = MAX_NODES * 4) => {
+    _getType = (type, depth = 4) => {
         if (depth === 0) return null;
 
         switch (type.kind) {
@@ -117,8 +117,9 @@ class TypeManager {
 
     /**
      * Utility function for retrieving the fields of a type
+     * - Due to the recursive nature of traversing graphs, we stop early to avoid circular queries
      */
-    _getQueryFields = (fields, depth = 2) => {
+    _getQueryFields = (fields, depth = this._maxDepth) => {
         if (depth === 0) return null;
 
         return fields.reduce((queryObject, field) => {
@@ -128,7 +129,7 @@ class TypeManager {
                 queryObject[field.name] = true;
             } else {
                 let depthFields = type === null ? type : this._getQueryFields(this._types[type].fields, depth - 1);
-                
+                // console.log(type, depthFields)
                 if (depthFields !== null) {
                     queryObject[field.name] = depthFields;
                 }

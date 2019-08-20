@@ -9,6 +9,10 @@ Object {
         author {
             name
             id
+            books {
+                name
+                isbn
+            }
             birthplace
         }
         isbn
@@ -20,6 +24,12 @@ Object {
         Object {
           "author": Object {
             "birthplace": "New York City, New York, U.S.",
+            "books": Array [
+              Object {
+                "isbn": "9780553213119",
+                "name": "Moby Dick",
+              },
+            ],
             "id": "1",
             "name": "Herman Melville",
           },
@@ -29,6 +39,16 @@ Object {
         Object {
           "author": Object {
             "birthplace": "Landport, Hampshire, England",
+            "books": Array [
+              Object {
+                "isbn": "9780008329532",
+                "name": "A Tale of Two Cities",
+              },
+              Object {
+                "isbn": "9780141324524",
+                "name": "A Christmas Carol",
+              },
+            ],
             "id": "2",
             "name": "Charles Dickens",
           },
@@ -38,6 +58,16 @@ Object {
         Object {
           "author": Object {
             "birthplace": "Landport, Hampshire, England",
+            "books": Array [
+              Object {
+                "isbn": "9780008329532",
+                "name": "A Tale of Two Cities",
+              },
+              Object {
+                "isbn": "9780141324524",
+                "name": "A Christmas Carol",
+              },
+            ],
             "id": "2",
             "name": "Charles Dickens",
           },

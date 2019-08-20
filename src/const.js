@@ -13,4 +13,4 @@ export const scalars = new Set([
     'String'
 ]);
 
-export const MAX_NODES = 7;
+export const MAX_NODES = 2;

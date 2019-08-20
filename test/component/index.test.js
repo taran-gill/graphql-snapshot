@@ -9,7 +9,8 @@ const getSnapshotPath = (fileName) => path.join('..', '__snapshots__', `${fileNa
 
 describe('Queries', () => {
     it('use GraphTester to test all root queries', async () => {
-        const graphTester = new GraphTester({ testClient });
+        const options = { maxDepth: 3 }
+        const graphTester = new GraphTester({ testClient, options });
         await graphTester.initialize();
 
         for await (let queryData of graphTester.rootQueries()) {
