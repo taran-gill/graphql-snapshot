@@ -9,13 +9,14 @@ const typeDefs = gql`
 
     type Book {
         name: String,
-        authorId: ID!,
+        author: Author,
         isbn: ID!
     }
 
     type Author {
         name: String
-        id: ID!,
+        id: ID!,,
+        books: [Book!]!,
         birthplace: String
     }
 `;

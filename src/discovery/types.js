@@ -12,7 +12,7 @@ import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
 import skippable from './skip-types.hjson';
 
-import { kinds, MAX_NODES } from '../const';
+import { kinds, scalars, MAX_NODES } from '../const';
 
 /**
  * @protected {Hash<Type, MetaData>} this._queryTypes
@@ -42,7 +42,7 @@ class TypeManager {
                 { [ rootQueryName ]: returnType } :
                 this._getQueryObjectFromType(rootQueryName, returnType);
             
-            const query = jsonToGraphQLQuery({ query: queryObject });
+            const query = jsonToGraphQLQuery({ query: queryObject }, { pretty: true });
 
             return {
                 name: rootQueryName,
@@ -108,15 +108,34 @@ class TypeManager {
     }
 
     _getQueryObjectFromType = (rootQueryName, type) => {
-        const query= { [rootQueryName]: null };
+        const query = { [rootQueryName]: null };
 
-        query[rootQueryName] = this._types[type].fields.reduce((queryObj, field) => {
-            queryObj[field.name] = true;
-
-            return queryObj;
-        }, {});
+        query[rootQueryName] = this._getQueryFields(this._types[type].fields);
 
         return query;
+    }
+
+    /**
+     * Utility function for retrieving the fields of a type
+     */
+    _getQueryFields = (fields, depth = 2) => {
+        if (depth === 0) return null;
+
+        return fields.reduce((queryObject, field) => {
+            let type = this._getType(field.type);
+
+            if (scalars.has(type)) {
+                queryObject[field.name] = true;
+            } else {
+                let depthFields = type === null ? type : this._getQueryFields(this._types[type].fields, depth - 1);
+                
+                if (depthFields !== null) {
+                    queryObject[field.name] = depthFields;
+                }
+            }
+
+            return queryObject
+        }, {});
     }
 }
 

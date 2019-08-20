@@ -6,4 +6,11 @@ export const kinds = {
     'SCALAR': 'SCALAR'
 };
 
+export const scalars = new Set([
+    'Boolean',
+    'ID',
+    'Number',
+    'String'
+]);
+
 export const MAX_NODES = 7;

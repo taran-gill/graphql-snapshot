@@ -3,22 +3,44 @@
 exports[`Queries use GraphTester to test all root queries 1`] = `
 Object {
   "name": "books",
-  "query": "query { books { name authorId isbn } }",
+  "query": "query {
+    books {
+        name
+        author {
+            name
+            id
+            birthplace
+        }
+        isbn
+    }
+}",
   "results": Object {
     "data": Object {
       "books": Array [
         Object {
-          "authorId": "1",
+          "author": Object {
+            "birthplace": "New York City, New York, U.S.",
+            "id": "1",
+            "name": "Herman Melville",
+          },
           "isbn": "9780553213119",
           "name": "Moby Dick",
         },
         Object {
-          "authorId": "2",
+          "author": Object {
+            "birthplace": "Landport, Hampshire, England",
+            "id": "2",
+            "name": "Charles Dickens",
+          },
           "isbn": "9780008329532",
           "name": "A Tale of Two Cities",
         },
         Object {
-          "authorId": "2",
+          "author": Object {
+            "birthplace": "Landport, Hampshire, England",
+            "id": "2",
+            "name": "Charles Dickens",
+          },
           "isbn": "9780141324524",
           "name": "A Christmas Carol",
         },

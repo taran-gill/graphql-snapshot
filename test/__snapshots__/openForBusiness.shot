@@ -3,7 +3,9 @@
 exports[`Queries use GraphTester to test all root queries 1`] = `
 Object {
   "name": "openForBusiness",
-  "query": "query { openForBusiness }",
+  "query": "query {
+    openForBusiness
+}",
   "results": Object {
     "data": Object {
       "openForBusiness": true,
