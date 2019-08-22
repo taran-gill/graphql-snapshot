@@ -1,11 +1,11 @@
 import { validateOptions } from './validation.js';
 
-import { SchemaRegistrar } from '../discovery/base-schema.js';
+import { SchemaRegistrar } from '../discovery/schema-manager.js';
 
 class GraphTester {
     constructor({ testClient, options = {} }) {
         const newOptions = validateOptions(options);
-        // console.log(newOptions)
+
         this._schemaRegistrar = new SchemaRegistrar({ testClient, options: newOptions });
     }
 
