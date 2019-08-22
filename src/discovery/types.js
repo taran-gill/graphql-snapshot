@@ -7,12 +7,9 @@
  *      enforce non-case sensitivity.
  */
 
-import Hjson from 'hjson';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
-import skippable from './skip-types.hjson';
-
-import { kinds, scalars } from '../const';
+import { kinds, scalars, skippableTypes } from '../const';
 
 /**
  * @protected {Hash<Type, MetaData>} this._queryTypes
@@ -25,7 +22,7 @@ class TypeManager {
         this._schema = schema;
 
         this._queryTypes = {};
-        this._rootTypesToSkip = new Set(Hjson.parse(skippable));
+        this._rootTypesToSkip = new Set(skippableTypes);
 
         this._types = {};
         this._inputTypes = {};
@@ -86,6 +83,14 @@ class TypeManager {
         }, {});
     }
 
+    _getQueryObjectFromType = (rootQueryName, type) => {
+        const query = { [rootQueryName]: null };
+
+        query[rootQueryName] = this._getQueryFields(this._types[type].fields);
+
+        return query;
+    }
+
     /**
      * Utility function for retrieving the type a root query falls under
      * 
@@ -105,14 +110,6 @@ class TypeManager {
             default:
                 return null;
         }
-    }
-
-    _getQueryObjectFromType = (rootQueryName, type) => {
-        const query = { [rootQueryName]: null };
-
-        query[rootQueryName] = this._getQueryFields(this._types[type].fields);
-
-        return query;
     }
 
     /**
