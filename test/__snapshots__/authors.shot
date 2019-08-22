@@ -4,7 +4,7 @@ exports[`Queries use GraphTester to test all root queries 1`] = `
 Object {
   "name": "authors",
   "query": "query {
-    authors {
+    authors (id: 1) {
         name
         id
         books {
@@ -37,31 +37,6 @@ Object {
           ],
           "id": "1",
           "name": "Herman Melville",
-        },
-        Object {
-          "birthplace": "Landport, Hampshire, England",
-          "books": Array [
-            Object {
-              "author": Object {
-                "birthplace": "Landport, Hampshire, England",
-                "id": "2",
-                "name": "Charles Dickens",
-              },
-              "isbn": "9780008329532",
-              "name": "A Tale of Two Cities",
-            },
-            Object {
-              "author": Object {
-                "birthplace": "Landport, Hampshire, England",
-                "id": "2",
-                "name": "Charles Dickens",
-              },
-              "isbn": "9780141324524",
-              "name": "A Christmas Carol",
-            },
-          ],
-          "id": "2",
-          "name": "Charles Dickens",
         },
       ],
     },

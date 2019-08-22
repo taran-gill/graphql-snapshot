@@ -18,8 +18,9 @@ import { kinds, scalars, skippableTypes } from '../const';
  * @protected {Hash<Type, MetaData>} this._inputTypes - Inputs to queries will default to appropriate values
  */
 class TypeManager {
-    constructor(schema, options = {}) {
+    constructor(schema, inputVariables, options = {}) {
         this._schema = schema;
+        this._inputVariables = inputVariables;
 
         this._queryTypes = {};
         this._rootTypesToSkip = new Set(skippableTypes);
@@ -40,6 +41,11 @@ class TypeManager {
             const queryObject = this._types[returnType].kind === kinds.SCALAR ?
                 { [ rootQueryName ]: returnType } :
                 this._getQueryObjectFromType(rootQueryName, returnType);
+
+            // How jsonToGraphQLQuery expects arguments to be passed in
+            if (rootQueryMetadata.args && rootQueryMetadata.args.length > 0) {
+                queryObject[rootQueryName].__args = this._getArguments(rootQueryMetadata);
+            }
             
             const query = jsonToGraphQLQuery({ query: queryObject }, { pretty: true });
 
@@ -91,6 +97,16 @@ class TypeManager {
         return query;
     }
 
+    _getArguments = (rootQueryMetadata) => {
+        return rootQueryMetadata.args.reduce((args, currentArg) => {
+            const type = this._getType(currentArg.type);
+
+            args[currentArg.name] = this._inputVariables[type];
+
+            return args;
+        } , {});
+    }
+
     /**
      * Utility function for retrieving the type a root query falls under
      * 
@@ -126,7 +142,7 @@ class TypeManager {
                 queryObject[field.name] = true;
             } else {
                 let depthFields = type === null ? type : this._getQueryFields(this._types[type].fields, depth - 1);
-                // console.log(type, depthFields)
+
                 if (depthFields !== null) {
                     queryObject[field.name] = depthFields;
                 }

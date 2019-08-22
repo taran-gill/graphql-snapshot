@@ -5,7 +5,13 @@ module.exports = {
         books: () => {
             return books;
         },
-        authors: () => {
+        authors: (root, { id }) => {
+            if (id) {
+                id = parseInt(id);
+                const author = [authors.find((author) => author.id === id)];
+                return author.filter((v) => !!v);
+            }
+            
             return authors;
         },
         openForBusiness: () => {

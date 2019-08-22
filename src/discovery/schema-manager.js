@@ -10,10 +10,11 @@ import INTROSPECTION_QUERY from './base-schema.graphql';
 
 import { TypeManager } from './types';
 
-class SchemaRegistrar {
-    constructor({ testClient, options = {} }) {
+class SchemaManager {
+    constructor({ testClient, options = {}, inputVariables }) {
         this._testClient = testClient;
         this._options = options;
+        this._inputVariables = inputVariables;
     }
 
     /**
@@ -29,7 +30,7 @@ class SchemaRegistrar {
             throw new Error('Unable to fetch schema from server');
         }
 
-        this._typeManager = new TypeManager(res.data.__schema, this._options);
+        this._typeManager = new TypeManager(res.data.__schema, this._inputVariables, this._options);
     }
 
     async *makeQueries() {
@@ -46,4 +47,4 @@ class SchemaRegistrar {
     }
 }
 
-export { SchemaRegistrar };
+export { SchemaManager };

@@ -3,7 +3,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
     type Query {
         books: [Book!]!,
-        authors: [Author!]!,
+        authors(id: ID): [Author!]!,
         openForBusiness: Boolean!
     }
 
