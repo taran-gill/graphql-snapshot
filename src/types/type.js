@@ -7,12 +7,10 @@
  *      enforce non-case sensitivity.
  */
 
-import { jsonToGraphQLQuery } from 'json-to-graphql-query';
-
 import { kinds, scalars, skippableTypes } from '../const';
 
 /**
- * @protected {Hash<Type, MetaData>} this._queryTypes
+ * @protected {Hash<Type, MetaData>} this._rootQueries
  * @protected {Set} this._rootTypesToSkip - Types found on the root object that we should not consider when making queries
  * @protected {Hash<Type, MetaData>} this._types - All valid types queries may resolve to
  * @protected {Hash<Type, MetaData>} this._inputTypes - Inputs to queries will default to appropriate values
@@ -22,49 +20,27 @@ class TypeManager {
         this._schema = schema;
         this._inputVariables = inputVariables;
 
-        this._queryTypes = {};
+        this._rootQueries = {};
         this._rootTypesToSkip = new Set(skippableTypes);
 
         this._types = {};
         this._inputTypes = {};
 
-        this._registerRootTypes();
+        this._registerRootOperations();
         this._registerTypes();
 
         this._maxDepth = options.maxDepth;
-    }
-
-    getRootQueries = () => {
-        return Object.entries(this._queryTypes).map(([rootQueryName, rootQueryMetadata]) => {
-            let returnType = this._getType(rootQueryMetadata.type);
-
-            const queryObject = this._types[returnType].kind === kinds.SCALAR ?
-                { [ rootQueryName ]: returnType } :
-                this._getQueryObjectFromType(rootQueryName, returnType);
-
-            // How jsonToGraphQLQuery expects arguments to be passed in
-            if (rootQueryMetadata.args && rootQueryMetadata.args.length > 0) {
-                queryObject[rootQueryName].__args = this._getArguments(rootQueryMetadata);
-            }
-            
-            const query = jsonToGraphQLQuery({ query: queryObject }, { pretty: true });
-
-            return {
-                name: rootQueryName,
-                query
-            };
-        });
     }
 
     /**
      * - Register queries on the root schema
      * - Skip root mutations and subscriptions
      */
-    _registerRootTypes = () => {
+    _registerRootOperations = () => {
         const { queryType, mutationType, subscriptionType } = this._schema;
-        
+
         if (queryType !== null) {
-            queryType.fields.forEach(field => this._queryTypes[field.name] = field);
+            queryType.fields.forEach(field => this._rootQueries[field.name] = field);
         }
 
         if (mutationType !== null) {
@@ -89,16 +65,8 @@ class TypeManager {
         }, {});
     }
 
-    _getQueryObjectFromType = (rootQueryName, type) => {
-        const query = { [rootQueryName]: null };
-
-        query[rootQueryName] = this._getQueryFields(this._types[type].fields);
-
-        return query;
-    }
-
-    _getArguments = (rootQueryMetadata) => {
-        return rootQueryMetadata.args.reduce((args, currentArg) => {
+    _getArguments = (rootOperationMetadata) => {
+        return rootOperationMetadata.args.reduce((args, currentArg) => {
             const type = this._getType(currentArg.type);
 
             args[currentArg.name] = this._inputVariables[type];
@@ -108,7 +76,7 @@ class TypeManager {
     }
 
     /**
-     * Utility function for retrieving the type a root query falls under
+     * Utility function for retrieving the type a root operation falls under
      * 
      * @param {Number} depth - We use a depth of 4 because each node may have up to four recursive traversals
      *                         (case of [type!]!)
@@ -132,23 +100,23 @@ class TypeManager {
      * Utility function for retrieving the fields of a type
      * - Due to the recursive nature of traversing graphs, we stop early to avoid circular queries
      */
-    _getQueryFields = (fields, depth = this._maxDepth) => {
+    _getOperationFields = (fields, depth = this._maxDepth) => {
         if (depth === 0) return null;
 
-        return fields.reduce((queryObject, field) => {
+        return fields.reduce((operationObject, field) => {
             let type = this._getType(field.type);
 
             if (scalars.has(type)) {
-                queryObject[field.name] = true;
+                operationObject[field.name] = true;
             } else {
-                let depthFields = type === null ? type : this._getQueryFields(this._types[type].fields, depth - 1);
+                let depthFields = type === null ? type : this._getOperationFields(this._types[type].fields, depth - 1);
 
                 if (depthFields !== null) {
-                    queryObject[field.name] = depthFields;
+                    operationObject[field.name] = depthFields;
                 }
             }
 
-            return queryObject
+            return operationObject
         }, {});
     }
 }

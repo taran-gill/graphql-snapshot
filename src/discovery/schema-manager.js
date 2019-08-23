@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 
 import INTROSPECTION_QUERY from './base-schema.graphql';
 
-import { TypeManager } from './types';
+import { QueryManager } from '../types/query.js';
 
 class SchemaManager {
     constructor({ testClient, options = {}, inputVariables }) {
@@ -30,11 +30,11 @@ class SchemaManager {
             throw new Error('Unable to fetch schema from server');
         }
 
-        this._typeManager = new TypeManager(res.data.__schema, this._inputVariables, this._options);
+        this._queryManager = new QueryManager(res.data.__schema, this._inputVariables, this._options);
     }
 
     async *makeQueries() {
-        const queries = this._typeManager.getRootQueries();
+        const queries = this._queryManager.getRootQueries();
         for (let queryObject of queries) {
             const results = await this._testClient.query({ query: gql(queryObject.query) });
 
