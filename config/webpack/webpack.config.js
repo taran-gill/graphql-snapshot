@@ -1,7 +1,5 @@
 const path = require('path')
 
-const { BannerPlugin } = require('webpack')
-
 module.exports = {
     target: 'node',
     entry: path.resolve(__dirname, '../../src/index.js'),
@@ -11,12 +9,6 @@ module.exports = {
         filename: 'audit-graph.js',
         path: path.resolve(__dirname, '../../dist/')
     },
-    plugins: [
-        new BannerPlugin({
-          banner: '#!/usr/bin/env node',
-          raw: true,
-        }),
-    ],
     module: {
         rules: [
             {

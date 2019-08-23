@@ -4,9 +4,10 @@
   "description": "Test and snapshot tool for verifying your GraphQL Api works",
   "main": "src/index.js",
   "scripts": {
-    "build": "webpack --config config/webpack/webpack.config.js",
-    "start": "yarn run build && node ./test/server/index.js",
-    "test": "yarn run build && ./node_modules/.bin/jest --config config/jest/jest.config.js"
+    "build:prod": "webpack --config config/webpack/webpack.prod.js",
+    "build:dev": "webpack --config config/webpack/webpack.dev.js",
+    "start": "yarn run build:dev && node ./test/server/index.js",
+    "test": "yarn run build:dev && ./node_modules/.bin/jest --config config/jest/jest.config.js"
   },
   "author": "Taran Gill",
   "license": "MIT",
