@@ -3,7 +3,6 @@
  * Reconcile user input with schema information
  */
 
-import fetch from 'node-fetch';
 import gql from 'graphql-tag';
 
 import INTROSPECTION_QUERY from './base-schema.graphql';
