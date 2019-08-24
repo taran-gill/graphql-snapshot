@@ -1,9 +1,9 @@
-const path = require('path');
-const util = require('util');
+import path from 'path'
+import util from 'util';
 
-const { testClient } = require('../server/index.js');
+import { testClient } from '../server/index.js';
 
-const { GraphTester } = require('../../dist/audit-graph');
+import { GraphTester } from '../../src/controller/audit-graph.js';
 
 const getSnapshotPath = (fileName) => path.join('..', '__snapshots__', `${fileName}.shot`);
 

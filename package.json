@@ -6,20 +6,22 @@
   "scripts": {
     "build:prod": "webpack --config config/webpack/webpack.prod.js",
     "build:dev": "webpack --config config/webpack/webpack.dev.js",
-    "start": "yarn run build:dev && node ./test/server/index.js",
-    "test": "yarn run build:dev && ./node_modules/.bin/jest --config config/jest/jest.config.js"
+    "start": "node ./test/server/index.js",
+    "test": "./node_modules/.bin/jest --config config/jest/jest.config.js"
   },
   "author": "Taran Gill",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.5.0",
+    "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/preset-env": "^7.5.0",
+    "@babel/preset-env": "^7.5.5",
     "apollo-server": "^2.8.1",
     "apollo-server-testing": "^2.8.1",
+    "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "jest": "^24.9.0",
     "jest-specific-snapshot": "^2.0.0",
+    "jest-transform-graphql": "^2.1.0",
     "raw-loader": "^3.1.0",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"

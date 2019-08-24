@@ -1,10 +1,8 @@
-const { ApolloServer } = require('apollo-server');
-const { createTestClient } = require('apollo-server-testing');
+import { ApolloServer } from 'apollo-server';
+import { createTestClient } from 'apollo-server-testing';
 
-const { GraphTester } = require('../../dist/audit-graph');
-
-const typeDefs = require('./schema');
-const resolvers = require('./resolvers');
+import typeDefs from './schema.graphql';
+import resolvers from './resolvers';
 
 const server = new ApolloServer({
     typeDefs,

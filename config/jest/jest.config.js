@@ -1,4 +1,10 @@
 module.exports = {
     setupFilesAfterEnv: ['./monkey-patches.js'],
-    roots: ['../../test/']
+    roots: ['../../'],
+
+    moduleFileExtensions: ['js', 'graphql'],
+    transform: {
+        "\\.(gql|graphql)$": "jest-transform-graphql",
+        '^.+\\.(js|jsx)?$': 'babel-jest'
+    },
 };

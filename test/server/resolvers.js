@@ -1,4 +1,4 @@
-const { books, authors } = require('../fixtures/book-store.json');
+import { books, authors } from '../fixtures/book-store.json';
 
 module.exports = {
     Query: {
