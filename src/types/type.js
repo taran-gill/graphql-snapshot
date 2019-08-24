@@ -65,16 +65,6 @@ class TypeManager {
         }, {});
     }
 
-    _getArguments = (rootOperationMetadata) => {
-        return rootOperationMetadata.args.reduce((args, currentArg) => {
-            const type = this._getType(currentArg.type);
-
-            args[currentArg.name] = this._inputVariables[type];
-
-            return args;
-        } , {});
-    }
-
     /**
      * Utility function for retrieving the type a root operation falls under
      * 
@@ -118,6 +108,26 @@ class TypeManager {
 
             return operationObject
         }, {});
+    }
+
+    _getArguments = (args, depth = this._maxDepth) => {
+        if (depth === 0) return null;
+
+        return args.reduce((argsObject, currentArg) => {
+            const type = this._getType(currentArg.type);
+
+            if (scalars.has(type)) {
+                argsObject[currentArg.name] = this._inputVariables[type];
+            } else {
+                let depthFields = type === null ? type : this._getArguments(this._types[type].args, depth - 1);
+
+                if (depthFields !== null) {
+                    operationObject[field.name] = depthFields;
+                }
+            }
+
+            return argsObject;
+        } , {});
     }
 }
 

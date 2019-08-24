@@ -19,7 +19,7 @@ class QueryManager extends TypeManager {
 
             // How jsonToGraphQLQuery expects arguments to be passed in
             if (rootQueryMetadata.args && rootQueryMetadata.args.length > 0) {
-                queryObject[rootQueryName].__args = this._getArguments(rootQueryMetadata);
+                queryObject[rootQueryName].__args = this._getArguments(rootQueryMetadata.args);
             }
             
             const query = jsonToGraphQLQuery({ query: queryObject }, { pretty: true });
