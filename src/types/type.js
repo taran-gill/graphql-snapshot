@@ -16,7 +16,7 @@ import { kinds, scalars, skippableTypes } from '../const';
  * @protected {Hash<Type, MetaData>} this._inputTypes - Inputs to queries will default to appropriate values
  */
 class TypeManager {
-    constructor(schema, inputVariables, options = {}) {
+    constructor(schema, inputVariables, options) {
         this._schema = schema;
         this._inputVariables = inputVariables;
 
