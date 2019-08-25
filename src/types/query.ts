@@ -1,11 +1,12 @@
 import { jsonToGraphQLQuery, IJsonToGraphQLOptions } from 'json-to-graphql-query';
 
 import { kinds } from '../const';
+import { OperationsManager } from '../interfaces';
 
 import { TypeManager } from './type';
 
-class QueryManager extends TypeManager {
-    getRootQueries = (): Array<{ name: string, query: any }> => {
+class QueryManager extends TypeManager implements OperationsManager {
+    all = (): Array<{ name: string, query: any }> => {
         return Object.entries(this.rootQueries).map(([rootQueryName, rootQueryMetadata]) => {
             let returnType: string = this._getType(rootQueryMetadata.type);
 

@@ -41,7 +41,7 @@ class SchemaManager {
     }
 
     async *makeQueries() {
-        const queries = this.queryManager.getRootQueries();
+        const queries = this.queryManager.all();
         for (let queryObject of queries) {
             const results = await this.testClient.query({ query: gql(queryObject.query) });
 
