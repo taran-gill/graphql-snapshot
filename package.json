@@ -2,7 +2,7 @@
   "name": "audit-graph",
   "version": "0.0.1",
   "description": "Test and snapshot tool for verifying your GraphQL Api works",
-  "main": "src/index.js",
+  "main": "dist/audit-graph.js",
   "scripts": {
     "build:prod": "webpack --config config/webpack/webpack.prod.js",
     "build:dev": "webpack --config config/webpack/webpack.dev.js",
