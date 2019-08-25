@@ -1,5 +1,4 @@
-import path from 'path'
-import util from 'util';
+import path from 'path';
 
 import { testClient } from '../server/index.js';
 

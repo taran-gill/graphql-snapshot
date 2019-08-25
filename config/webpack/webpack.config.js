@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
     target: 'node',
-    entry: path.resolve(__dirname, '../../src/index.js'),
+    entry: path.resolve(__dirname, '../../src/index.ts'),
     output: {
         library: '',
         libraryTarget: 'commonjs',
