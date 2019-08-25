@@ -1,11 +1,16 @@
 import schema from '../fixtures/schema.json';
 
-import { TypeManager } from '../../src/types/type.js';
-import { inputVariables } from '../../src/controller/variables.js';
+import { TypeManager } from '../../src/types/type.ts';
+import { defaultInputVariables as inputVariables } from '../../src/controller/variables.ts';
 
 const options = { maxDepth: 3 };
 
-const typeManager = new TypeManager(schema, inputVariables, options);
+/**
+ * Since TypeManager is an abstract class, we need to subclass it before testing
+ */
+class SubclassedTypeManager extends TypeManager {}
+
+const typeManager = new SubclassedTypeManager(schema, inputVariables, options);
 
 describe('TypeManager', () => {
     it('should recognize return types', () => {

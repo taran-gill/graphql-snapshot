@@ -1,4 +1,6 @@
-export const kinds = {
+export type KindsType = { [key: string]: string };
+
+export const kinds: KindsType = {
     'OBJECT': 'OBJECT',
     'INPUT_OBJECT': 'INPUT_OBJECT',
     'LIST': 'LIST',
@@ -6,7 +8,7 @@ export const kinds = {
     'SCALAR': 'SCALAR'
 };
 
-export const scalars = new Set([
+export const scalars: Set<string> = new Set([
     'Boolean',
     'Float',
     'ID',
@@ -18,7 +20,7 @@ export const scalars = new Set([
  * List of types that the TypeManager can safely ignore
  * - Since the TypeManager compares types as lower case, we write them as such here
  */
-export const skippableTypes = [
+export const skippableTypes: Array<string> = [
     'mutation',
     '_modelmutationtype',
     'query',
@@ -33,4 +35,4 @@ export const skippableTypes = [
     '__typekind'
 ];
 
-export const MAX_NODES = 2;
+export const MAX_NODES: number = 2;

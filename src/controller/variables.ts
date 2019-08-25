@@ -1,7 +1,9 @@
 /**
  * #TODO: Allow for user-inputted input variables based on root query
  */
-export const inputVariables = {
+import { inputVariables } from '../interfaces';
+
+export const defaultInputVariables : inputVariables = {
     Boolean : true,
     ID : 1,
     Float : 1.0,

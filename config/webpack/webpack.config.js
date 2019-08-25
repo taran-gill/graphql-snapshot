@@ -9,6 +9,9 @@ module.exports = {
         filename: 'audit-graph.js',
         path: path.resolve(__dirname, '../../dist/')
     },
+    resolve: {
+        extensions: ['.js', '.d.ts', '.ts', '.graphql']
+    },
     module: {
         rules: [
             {
@@ -25,17 +28,15 @@ module.exports = {
                 }
             },
             {
+                test: /\.ts$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
+            },
+            {
                 test: /\.graphql$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'graphql-tag/loader'
-                }
-            },
-            {
-                test: /\.hjson$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'raw-loader'
                 }
             }
         ]
