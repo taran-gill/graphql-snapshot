@@ -1,7 +1,7 @@
-import schema from '../fixtures/schema.json';
+import schema from '../../fixtures/schema.json';
 
-import { TypeManager } from '../../src/types/type.ts';
-import { defaultInputVariables as inputVariables } from '../../src/controller/variables.ts';
+import { TypeManager } from '../../../src/types/type.ts';
+import { defaultInputVariables as inputVariables } from '../../../src/controller/variables.ts';
 
 const options = { maxDepth: 3 };
 

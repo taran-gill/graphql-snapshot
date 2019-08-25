@@ -1,7 +1,7 @@
-import schema from '../fixtures/schema.json';
+import schema from '../../fixtures/schema.json';
 
-import { QueryManager } from '../../src/types/query.ts';
-import { defaultInputVariables as inputVariables } from '../../src/controller/variables.ts';
+import { QueryManager } from '../../../src/types/query.ts';
+import { defaultInputVariables as inputVariables } from '../../../src/controller/variables.ts';
 
 const options = { maxDepth: 3 };
 
