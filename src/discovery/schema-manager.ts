@@ -40,7 +40,7 @@ class SchemaManager {
         this.queryManager = new QueryManager(res.data.__schema, this.inputVariables, this.options);
     }
 
-    async *makeQueries() {
+    async *queries() {
         const queries = this.queryManager.all();
         for (let queryObject of queries) {
             const results = await this.testClient.query({ query: gql(queryObject.query) });

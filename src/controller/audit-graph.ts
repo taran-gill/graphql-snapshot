@@ -1,32 +1,19 @@
 import { validateOptions } from './validation';
 import { defaultInputVariables as inputVariables } from './variables';
 
-import { validOptions } from '../interfaces';
+import { validOptions, graphTesterInputs, graphTesterApi } from '../interfaces';
 
 import { SchemaManager } from '../discovery/schema-manager';
 
-interface GraphTesterApi {
-    testClient: any,
-    options?: validOptions
-};
+const graphTester = async ({ testClient, options = {} }: graphTesterInputs): Promise<graphTesterApi> => {
+    const newOptions: validOptions = validateOptions(options);
 
-class GraphTester {
-    private schemaManager: SchemaManager;
+    const schemaManager: SchemaManager = new SchemaManager({ testClient, inputVariables, options: newOptions });
+    await schemaManager.initialize();
 
-    constructor({ testClient, options = {} }: GraphTesterApi) {
-        const newOptions: validOptions = validateOptions(options);
-
-        this.schemaManager = new SchemaManager({ testClient, inputVariables, options: newOptions });
-    }
-
-    initialize = (): Promise<void> => this.schemaManager.initialize();
-
-    async *rootQueries(): any {
-        const queries = this.schemaManager.makeQueries();
-        for await (let query of queries) {
-            yield query;
-        }
-    }
+    return {
+        queries: schemaManager.queries.bind(schemaManager)
+    };
 }
 
-export { GraphTester };
+export { graphTester };

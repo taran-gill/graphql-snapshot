@@ -1,5 +1,5 @@
 import "@babel/polyfill";
 
-import { GraphTester } from './controller/audit-graph';
+import { graphTester } from './controller/audit-graph';
 
-export { GraphTester, GraphTester as default };
+export { graphTester, graphTester as default };
