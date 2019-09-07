@@ -10,7 +10,7 @@ const validateOptions = (options: validOptions|undefined): validOptions => {
     if (Reflect.has(options, 'maxDepth') && !isNaN(options.maxDepth) && options.maxDepth > 0 && options.maxDepth < Infinity) {
         newOptions.maxDepth = options.maxDepth;
     } else if (Reflect.has(options, 'maxDepth')) {
-        console.warn(`[Audit-Graph] Invalid graph depth ${options.maxDepth}. Setting default ${MAX_NODES}`);
+        throw new Error(`[Audit-Graph] Invalid graph depth ${options.maxDepth}.`);
     }
 
     return newOptions;
