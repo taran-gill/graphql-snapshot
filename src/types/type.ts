@@ -93,8 +93,6 @@ abstract class TypeManager {
             case kinds.INPUT_OBJECT: // Fallthrough
             case kinds.SCALAR:
                 return type.name;
-            default:
-                return null;
         }
     }
 
