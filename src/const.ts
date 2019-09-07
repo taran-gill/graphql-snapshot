@@ -12,7 +12,7 @@ export const scalars: Set<string> = new Set([
     'Boolean',
     'Float',
     'ID',
-    'Number',
+    'Int',
     'String'
 ]);
 

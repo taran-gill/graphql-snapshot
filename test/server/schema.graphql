@@ -1,7 +1,11 @@
 type Query {
-    books: [Book!]!,
+    books(filter: Filter): [Book!]!,
     authors(id: ID): [Author!]!,
     openForBusiness: Boolean!
+}
+
+input Filter {
+    limit: Int
 }
 
 type Book {

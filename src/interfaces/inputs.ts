@@ -4,6 +4,6 @@ export interface inputVariables {
     Boolean: boolean,
     ID : string|number,
     Float : number,
-    Number : number,
+    Int : number,
     String : string,
 };

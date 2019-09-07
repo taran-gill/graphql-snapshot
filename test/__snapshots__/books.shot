@@ -4,7 +4,7 @@ exports[`Queries use GraphTester to test all root queries 1`] = `
 Object {
   "name": "books",
   "query": "query {
-    books {
+    books (filter: {limit: 1}) {
         name
         author {
             name

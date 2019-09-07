@@ -90,6 +90,7 @@ abstract class TypeManager {
             case kinds.NON_NULL:
                 return this._getType(type.ofType, depth - 1);
             case kinds.OBJECT: // Fallthrough
+            case kinds.INPUT_OBJECT: // Fallthrough
             case kinds.SCALAR:
                 return type.name;
             default:
@@ -112,9 +113,7 @@ abstract class TypeManager {
             } else {
                 let depthFields = type === null ? type : this._getOperationFields(this.types[type].fields, depth - 1);
 
-                if (depthFields !== null) {
-                    operationObject[field.name] = depthFields;
-                }
+                operationObject[field.name] = depthFields !== null ? depthFields : false;
             }
 
             return operationObject
@@ -123,18 +122,15 @@ abstract class TypeManager {
 
     protected _getArguments = (args: Array<schemaInputArguments>, depth: number = this.maxDepth): any => {
         if (depth === 0) return null;
-
         return args.reduce((argsObject: { [path: string]: any }, currentArg: schemaInputArguments) => {
             const type: string|null = this._getType(currentArg.type);
 
             if (scalars.has(type)) {
                 argsObject[currentArg.name] = this.inputVariables[type];
             } else {
-                let depthFields = type === null ? type : this._getArguments(this.types[type].args, depth - 1);
+                let depthFields = type === null ? type : this._getArguments(this.types[type].inputFields, depth - 1);
 
-                if (depthFields !== null) {
-                    argsObject[depthFields.name] = depthFields;
-                }
+                argsObject[currentArg.name] = depthFields !== null ? depthFields : false;
             }
 
             return argsObject;

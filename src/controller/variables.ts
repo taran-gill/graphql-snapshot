@@ -7,6 +7,6 @@ export const defaultInputVariables : inputVariables = {
     Boolean : true,
     ID : 1,
     Float : 1.0,
-    Number : 1,
+    Int : 1,
     String : 'Lorem ipsum',
 };
