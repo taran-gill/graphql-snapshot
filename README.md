@@ -12,6 +12,28 @@ The purpose of this library is to offer the ability to perform exhaustive tests 
 
 ## Example
 
+```javascript
+import { graphTester } from 'audit-graph';
+
+/* Initialize a GraphQL client that has a query() method. For reference, I used ApolloServer's test client. */
+const testClient = new TestClient();
+
+describe('Snapshot testing', () => {
+    it('use GraphTester to test all root queries', async () => {
+        const options = { maxDepth: 3 }
+        const graphTestRunner = await graphTester({ testClient, options });
+
+        for await (let queryData of graphTestRunner.queries()) {
+            const snapshotPath = getSnapshotPath(queryData.name);
+
+            // toMatchSpecificSnapshot is a custom matcher. See below for details.
+            expect(queryData).toMatchSpecificSnapshot(snapshotPath);
+        }
+    });
+});
+
+```
+
 [Here's](https://github.com/taran-gill/audit-graph/blob/master/test/component/index.test.js) an example of what your snapshot testing would look like.
 I've used the library to verify changes in my fixtures.
 
