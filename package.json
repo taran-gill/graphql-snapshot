@@ -1,6 +1,6 @@
 {
   "name": "graphql-snapshot",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Test and snapshot tool for verifying your GraphQL Api works",
   "main": "dist/graphql-snapshot.js",
   "scripts": {
