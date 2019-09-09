@@ -1,12 +1,12 @@
 {
-  "name": "audit-graph",
+  "name": "graphql-snapshot",
   "version": "0.0.1",
   "description": "Test and snapshot tool for verifying your GraphQL Api works",
-  "main": "dist/audit-graph.js",
+  "main": "dist/graphql-snapshot.js",
   "scripts": {
     "build:prod": "webpack --config config/webpack/webpack.prod.js",
     "build:dev": "webpack --config config/webpack/webpack.dev.js",
-    "start": "webpack --config config/webpack/webpack.prod.js && node dist/audit-graph.js",
+    "start": "webpack --config config/webpack/webpack.prod.js && node dist/graphql-snapshot.js",
     "test": "./node_modules/.bin/jest --config config/jest/jest.config.js"
   },
   "author": "Taran Gill",

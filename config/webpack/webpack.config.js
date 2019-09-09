@@ -6,7 +6,7 @@ module.exports = {
     output: {
         library: '',
         libraryTarget: 'commonjs',
-        filename: 'audit-graph.js',
+        filename: 'graphql-snapshot.js',
         path: path.resolve(__dirname, '../../dist/')
     },
     resolve: {

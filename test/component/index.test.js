@@ -2,7 +2,7 @@ import path from 'path';
 
 import { testClient } from '../server/index.js';
 
-import { graphTester } from '../../src/controller/audit-graph.ts';
+import { graphTester } from '../../src/controller/graphql-snapshot.ts';
 
 const getSnapshotPath = (fileName) => path.join('..', '__snapshots__', `${fileName}.shot`);
 
