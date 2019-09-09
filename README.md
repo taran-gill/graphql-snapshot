@@ -1,4 +1,4 @@
-# GraphQL-Snapshot &middot; [![CircleCI](https://circleci.com/gh/taran-gill/graphql-snapshot.svg?style=svg)](https://circleci.com/gh/taran-gill/graphql-snapshot) [![codecov](https://codecov.io/gh/taran-gill/graphql-snapshot/branch/master/graph/badge.svg)](https://codecov.io/gh/taran-gill/graphql-snapshot)
+# GraphQL-Snapshot &middot; [![CircleCI](https://circleci.com/gh/taran-gill/graphql-snapshot.svg?style=svg)](https://circleci.com/gh/taran-gill/graphql-snapshot) [![codecov](https://codecov.io/gh/taran-gill/graphql-snapshot/branch/master/graph/badge.svg?token=5SQQUxzV4J)](https://codecov.io/gh/taran-gill/graphql-snapshot)
 
 GraphQL-Snapshot is a library that takes advantage of GraphQL's strongly-typed and introspective nature to provide an automated request-response system for snapshot testing.
 
